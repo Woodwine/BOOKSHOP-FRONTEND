@@ -10,7 +10,7 @@ import { listBookDetails } from '../actions/bookActions'
 
 
 function BookScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
 
     const params = useParams();
@@ -24,7 +24,7 @@ function BookScreen() {
     }, [dispatch, params])
 
     const addToCartHandler = () => {
-        history(`/cart/${params.id}?quantity=${quantity}`)
+        navigate(`/cart/${params.id}?quantity=${quantity}`)
     }
 
     return (

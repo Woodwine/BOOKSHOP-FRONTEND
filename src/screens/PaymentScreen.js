@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button, Col } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
@@ -8,7 +8,7 @@ import { savePaymentMethod } from '../actions/cartActions'
 
 
 function PaymentScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [paymentMethod, setPaymentMethod] = useState('PayPal')
@@ -17,13 +17,13 @@ function PaymentScreen() {
     const { shippingAddress } = cart
 
     if (!shippingAddress.address) {
-        history('/shipping')
+        navigate('/shipping')
     }
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(savePaymentMethod(paymentMethod))
-        history('/placeorder')
+        navigate('/placeorder')
     }
 
     return (

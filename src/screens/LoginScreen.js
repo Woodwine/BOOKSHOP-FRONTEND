@@ -9,7 +9,7 @@ import { login } from '../actions/userActions'
 
 
 function LoginScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
 
@@ -20,9 +20,9 @@ function LoginScreen() {
 
     useEffect(() => {
         if (userInfo) {
-            history(redirect)
+            navigate(redirect)
         }
-    }, [history, userInfo, redirect])
+    }, [navigate, userInfo, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault()

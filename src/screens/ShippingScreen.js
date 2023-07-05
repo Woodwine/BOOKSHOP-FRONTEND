@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
@@ -8,7 +8,7 @@ import { saveShippingAddress } from '../actions/cartActions'
 
 
 function ShippingScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const cart = useSelector(state => state.cart)
@@ -20,7 +20,7 @@ function ShippingScreen() {
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(saveShippingAddress({ address, phone_number }))
-        history('/payment')
+        navigate('/payment')
     }
 
     return (

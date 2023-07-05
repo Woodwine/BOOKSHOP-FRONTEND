@@ -9,7 +9,7 @@ import { register } from '../actions/userActions'
 
 
 function RegisterScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     const dispatch = useDispatch();
 
@@ -26,9 +26,9 @@ function RegisterScreen() {
 
     useEffect(() => {
         if (userInfo) {
-            history(redirect)
+            navigate(redirect)
         }
-    }, [history, userInfo, redirect])
+    }, [navigate, userInfo, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault()

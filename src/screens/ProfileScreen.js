@@ -9,7 +9,7 @@ import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
 
 
 function ProfileScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [username, setUsername] = useState('');
@@ -27,7 +27,7 @@ function ProfileScreen() {
 
     useEffect(() => {
         if (!userInfo) {
-            history('/login')
+            navigate('/login')
         } else {
             if (!user || !user.username || success) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
@@ -37,7 +37,7 @@ function ProfileScreen() {
                 setEmail(user.email)
             }
         }
-    }, [dispatch, history, userInfo, user, success])
+    }, [dispatch, navigate, userInfo, user, success])
 
     const submitHandler = (e) => {
         e.preventDefault()

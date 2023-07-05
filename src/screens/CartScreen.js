@@ -7,7 +7,7 @@ import { addToCart, removeFromCart } from '../actions/cartActions'
 
 
 function CartScreen() {
-    const history = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     const params = useParams();
     const bookID = params.id;
@@ -29,7 +29,7 @@ function CartScreen() {
     }
 
     const checkoutHandler = () => {
-        history('/login?redirect=/shipping/')
+        navigate('/login?redirect=/shipping/')
     }
 
     return (
