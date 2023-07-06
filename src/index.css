@@ -5,3 +5,7 @@ main {
 .list-group_item {
     font-size: large;
 }
+
+th {
+    font-weight: normal;
+}

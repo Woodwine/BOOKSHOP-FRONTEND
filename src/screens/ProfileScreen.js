@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
+import { myOrdersList } from '../actions/orderActions'
 
 
 function ProfileScreen() {
@@ -25,6 +27,9 @@ function ProfileScreen() {
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const { success } = userUpdateProfile
 
+    const orderMyList = useSelector(state => state.orderMyList)
+    const { loading: loadingOrders, error: errorOrders, orders } = orderMyList
+
     useEffect(() => {
         if (!userInfo) {
             navigate('/login')
@@ -32,6 +37,7 @@ function ProfileScreen() {
             if (!user || !user.username || success) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails())
+                dispatch(myOrdersList())
             } else {
                 setUsername(user.username)
                 setEmail(user.email)
@@ -95,6 +101,24 @@ function ProfileScreen() {
 
             <Col md={9}>
                 <h2>Мои заказы</h2>
+                {loadingOrders ? (
+                    <Loader />
+                ) : errorOrders ? (
+                    <Message variant='danger'>{error}</Message>
+                ) : (
+                    <Table striped responsive className='table-sm'>
+                        <thead>
+                            <tr>
+                                <th>Заказ</th>
+                                <th>Дата заказа</th>
+                                <th>Сумма заказа</th>
+                                <th>Оплачен</th>
+                                <th>Доставлен</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </Table>
+                )}
             </Col>
         </Row>
     )

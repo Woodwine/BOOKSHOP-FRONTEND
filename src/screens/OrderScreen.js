@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useParams, Link } from 'react-router-dom'
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderDetails } from '../actions/orderActions'
+import { getOrderDetails, payOrder } from '../actions/orderActions'
 
 
 function PlaceOrderScreen() {
@@ -15,6 +15,9 @@ function PlaceOrderScreen() {
 
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, error, loading } = orderDetails
+
+    const orderPay = useSelector(state => state.orderPay)
+    const { loading: loadingPay, success } = orderPay
 
     if (!loading && !error) {
         order.itemsPrice = order.ord_books.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)
@@ -27,27 +30,65 @@ function PlaceOrderScreen() {
 
     }, [order, orderId, dispatch])
 
+    const successPaymentHandler = () => {
+        dispatch(payOrder(orderId))
+    }
+
     return loading ? (
         <Loader />
     ) : error ? (
         <Message variant='danger'>{error}</Message>
     ) : (
         <div>
+            <h1>Заказ: &nbsp;&nbsp;{order.id}</h1>
             <Row>
                 <Col md={8}>
                     <ListGroup variant='flush'>
 
+                        <ListGroup.Item className='mb-3'></ListGroup.Item>
+
                         <ListGroup.Item>
-                            <h2 className='mb-3'>Доставка</h2>
                             <p className='fs-5'>
-                                <strong>Адрес доставки: &nbsp;&nbsp;</strong>
-                                {order.delivery_address.address}
+                                <strong>Дата заказа: &nbsp;&nbsp;</strong>
+                                {order.order_date}
                             </p>
+
                             <p className='fs-5'>
-                                <strong>Телефон: &nbsp;&nbsp;</strong>
-                                {order.delivery_address.phone_number}
+                                <strong>Статус заказа: &nbsp;&nbsp;</strong>
+                                {order.status}
                             </p>
                         </ListGroup.Item>
+
+                        {order.delivery_address.map((item) => (
+                            <ListGroup.Item>
+                                <h2 className='mb-3'>Доставка</h2>
+
+                                <p className='fs-5'>
+                                    <strong>Имя: &nbsp;&nbsp;</strong>
+                                    {order.customer.username}
+                                </p>
+
+                                <p className='fs-5'>
+                                    <strong>Email: &nbsp;&nbsp;</strong>
+                                    {order.customer.email}
+                                </p>
+
+                                <p className='fs-5'>
+                                    <strong>Адрес доставки: &nbsp;&nbsp;</strong>
+                                    {item.address}
+                                </p>
+                                <p className='fs-5'>
+                                    <strong>Телефон: &nbsp;&nbsp;</strong>
+                                    {item.phone_number}
+                                </p>
+
+                                {order.delivery_date ? (
+                                    <Message variant='success'>Заказ доставлен {order.delivery_date}</Message>
+                                ) : (
+                                    <Message variant='warning'>Не доставлен</Message>
+                                )}
+                            </ListGroup.Item>
+                        ))}
 
                         <ListGroup.Item>
                             <h2 className='mb-3'>Оплата</h2>
@@ -55,6 +96,11 @@ function PlaceOrderScreen() {
                                 <strong>Способ оплаты: &nbsp;&nbsp;</strong>
                                 {order.payment_method}
                             </p>
+                            {order.is_paid ? (
+                                <Message variant='success'>Заказ оплачен &nbsp;&nbsp;&nbsp;&nbsp;{order.pay_date}</Message>
+                            ) : (
+                                <Message variant='warning'>Заказ не оплачен</Message>
+                            )}
                         </ListGroup.Item>
 
                         <ListGroup.Item>
@@ -67,7 +113,7 @@ function PlaceOrderScreen() {
                                             <ListGroup.Item key={index}>
                                                 <Row>
                                                     <Col md={1}>
-                                                        <Image src={item.image} alt={item.title} fluid rounded />
+                                                        <Image src={item.book_image} alt={item.title} fluid rounded />
                                                     </Col>
 
                                                     <Col md={5}>
@@ -98,7 +144,7 @@ function PlaceOrderScreen() {
 
                             <ListGroup.Item className='list-group_item'>
                                 <Row>
-                                    <Col>Стоимость:</Col>
+                                    <Col>Стоимость товаров:</Col>
 
                                     <Col>{order.itemsPrice} &#8381;</Col>
                                 </Row>
@@ -120,6 +166,17 @@ function PlaceOrderScreen() {
                                 </Row>
                             </ListGroup.Item>
 
+                            {!order.is_paid && (
+                                <ListGroup.Item className='list-group_item'>
+                                    {loadingPay && <Loader />}
+                                    <Button type='button'
+                                        className='btn-secondary btn-lg d-grid gap-2 col-12 mx-auto'
+                                        onClick={successPaymentHandler}
+                                    >
+                                        Оплатить
+                                    </Button>
+                                </ListGroup.Item>
+                            )}
 
                         </ListGroup>
                     </Card>
