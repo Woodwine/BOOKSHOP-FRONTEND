@@ -31,12 +31,12 @@ function Header() {
                             style={{ maxHeight: '100px' }}
                             navbarScroll
                         >
-                            <LinkContainer to="/cart" className='fs-5'>
+                            <LinkContainer to="/cart" className='fs-5 mx-2'>
                                 <Nav.Link><i className='fas fa-shopping-cart'></i> Корзина</Nav.Link>
                             </LinkContainer>
 
                             {userInfo ? (
-                                <NavDropdown title={userInfo.username} id='username' className='fs-5'>
+                                <NavDropdown title={userInfo.username} id='username' className='fs-5 mx-2'>
                                     <LinkContainer to='/profile'>
                                         <NavDropdown.Item>Профиль</NavDropdown.Item>
                                     </LinkContainer>
@@ -47,6 +47,23 @@ function Header() {
                                     <Nav.Link><i className='fas fa-user'></i> Войти</Nav.Link>
                                 </LinkContainer>)
                             }
+
+                            {userInfo && userInfo.is_admin && (
+                                <NavDropdown title='Admin' id='adminMenu' className='fs-5 mx-2'>
+                                    <LinkContainer to='/admin/userlist'>
+                                        <NavDropdown.Item>Пользователи</NavDropdown.Item>
+                                    </LinkContainer>
+
+                                    <LinkContainer to='/admin/productlist'>
+                                        <NavDropdown.Item>Товары</NavDropdown.Item>
+                                    </LinkContainer>
+
+                                    <LinkContainer to='/admin/orderlist'>
+                                        <NavDropdown.Item>Заказы</NavDropdown.Item>
+                                    </LinkContainer>
+
+                                </NavDropdown>
+                            )}
 
                         </Nav>
                         <Form className="d-flex">

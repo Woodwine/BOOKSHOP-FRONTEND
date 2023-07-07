@@ -7,7 +7,9 @@ import {
     userLoginReducer,
     userRegisterReducer,
     userDetailsReducer,
-    userUpdateProfileReducer
+    userUpdateProfileReducer,
+    userListReducer,
+    userDeleteReducer
 } from './reducers/userReducers'
 
 import {
@@ -26,6 +28,8 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetails: userDetailsReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    userList: userListReducer,
+    userDelete: userDeleteReducer,
     orderCreate: orderCreateReducer,
     orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
@@ -53,8 +57,6 @@ const initialState = {
     userLogin: { userInfo: userInfoFromStorage },
 
 };
-
-console.log(initialState)
 
 
 const middleware = [thunk];

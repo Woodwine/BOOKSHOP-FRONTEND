@@ -34,9 +34,9 @@ function ProfileScreen() {
         if (!userInfo) {
             navigate('/login')
         } else {
-            if (!user || !user.username || success) {
+            if (!user || !user.username || success || userInfo.id !== user.id) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
-                dispatch(getUserDetails())
+                dispatch(getUserDetails(userInfo.id))
                 dispatch(myOrdersList())
             } else {
                 setUsername(user.username)
@@ -98,28 +98,47 @@ function ProfileScreen() {
 
                 </Form>
             </Col>
-
-            <Col md={9}>
-                <h2>Мои заказы</h2>
-                {loadingOrders ? (
-                    <Loader />
-                ) : errorOrders ? (
-                    <Message variant='danger'>{error}</Message>
-                ) : (
-                    <Table striped responsive className='table-sm'>
-                        <thead>
-                            <tr>
-                                <th>Заказ</th>
-                                <th>Дата заказа</th>
-                                <th>Сумма заказа</th>
-                                <th>Оплачен</th>
-                                <th>Доставлен</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                    </Table>
-                )}
-            </Col>
+            {!userInfo.is_admin && (
+                <Col md={9}>
+                    <h2>Мои заказы</h2>
+                    {loadingOrders ? (
+                        <Loader />
+                    ) : errorOrders ? (
+                        <Message variant='danger'>{error}</Message>
+                    ) : (
+                        <Table striped responsive className='table-sm'>
+                            <thead>
+                                <tr>
+                                    <th>Заказ</th>
+                                    <th>Дата заказа</th>
+                                    <th>Сумма заказа</th>
+                                    <th>Оплачен</th>
+                                    <th>Статус заказа</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {orders.map((item) => (
+                                    <tr key={item.id}>
+                                        <th>&nbsp;&nbsp;{item.id}</th>
+                                        <th>&nbsp;{item.order_date.substring(0, 8)}</th>
+                                        <th>&nbsp;{item.total_cost} &#8381;</th>
+                                        <th>&nbsp;{item.is_paid ? item.pay_date.substring(0, 8) : (
+                                            <i className='fas fa-times' style={{ color: 'red' }}></i>
+                                        )}</th>
+                                        <th>&nbsp;{item.status}</th>
+                                        <th>
+                                            <LinkContainer to={`/order/${item.id}`}>
+                                                <Button variant='outline-primary' className='btn-sm'>Детали заказа</Button>
+                                            </LinkContainer>
+                                        </th>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    )}
+                </Col>
+            )}
         </Row>
     )
 }
