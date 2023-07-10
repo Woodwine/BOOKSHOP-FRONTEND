@@ -5,12 +5,13 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import FormContainer from '../components/FormContainer'
 import { useDispatch, useSelector } from 'react-redux'
-import { getUserDetails } from '../actions/userActions'
+import { getUserDetails, updateUser } from '../actions/userActions'
+import { USER_UPDATE_RESET } from '../constants/userConstants'
 
 
 function UserEditScreen() {
     const params = useParams();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const userId = params.id
@@ -23,20 +24,29 @@ function UserEditScreen() {
     const userDetails = useSelector(state => state.userDetails)
     const { loading, user, error } = userDetails
 
-    useEffect(() => {
-        console.log(user, userId)
-        if ((!user) || (user.id !== Number(userId))) {
+    const userUpdate = useSelector(state => state.userUpdate)
+    const { loading: loadingUpdate, error: errorUpdate, success: successUpdate } = userUpdate
 
-            dispatch(getUserDetails(userId))
+    useEffect(() => {
+
+        if (successUpdate) {
+            dispatch({ type: USER_UPDATE_RESET })
+            navigate('/admin/userlist')
         } else {
-            setUsername(user.username);
-            setEmail(user.email);
-            setAdmin(user.is_admin);
+            if ((!user) || (user.id !== Number(userId))) {
+                dispatch(getUserDetails(userId))
+            } else {
+                setUsername(user.username);
+                setEmail(user.email);
+                setAdmin(user.is_admin);
+            }
         }
-    }, [dispatch, user, userId])
+
+    }, [user, userId, successUpdate, navigate, dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()
+        dispatch(updateUser({ id: user.id, username: username, email: email, is_admin: is_admin }))
     }
 
     return (
@@ -50,11 +60,13 @@ function UserEditScreen() {
 
             <FormContainer>
                 <h1>Редактировать профиль</h1>
+                {loadingUpdate && <Loader />}
+                {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
 
                 {loading ?
                     (<Loader />)
                     : error ? (
-                        <Message variant='danger'></Message>
+                        <Message variant='danger'>{error.message}</Message>
                     ) : (
                         <Form onSubmit={submitHandler}>
 

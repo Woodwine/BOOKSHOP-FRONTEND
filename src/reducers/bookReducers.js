@@ -5,7 +5,12 @@ import {
 
     BOOK_DETAILS_REQUEST,
     BOOK_DETAILS_SUCCESS,
-    BOOK_DETAILS_FAIL
+    BOOK_DETAILS_FAIL,
+
+    BOOK_DELETE_REQUEST,
+    BOOK_DELETE_SUCCESS,
+    BOOK_DELETE_FAIL,
+
 } from '../constants/bookConstants'
 
 
@@ -35,6 +40,23 @@ export const bookDetailsReducer = (state = { book: { comments: [] } }, action) =
             return { loading: false, book: action.payload };
 
         case BOOK_DETAILS_FAIL:
+            return { loading: false, error: action.payload };
+
+        default:
+            return state;
+    }
+}
+
+
+export const bookDeleteReducer = (state = {}, action) => {
+    switch (action.type) {
+        case BOOK_DELETE_REQUEST:
+            return { loading: true };
+
+        case BOOK_DELETE_SUCCESS:
+            return { loading: false, success: true };
+
+        case BOOK_DELETE_FAIL:
             return { loading: false, error: action.payload };
 
         default:
