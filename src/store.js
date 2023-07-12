@@ -5,6 +5,8 @@ import {
     bookListReducer,
     bookDetailsReducer,
     bookDeleteReducer,
+    bookCreateReducer,
+    bookUpdateReducer,
 } from './reducers/bookReducers'
 import { cartReducer } from './reducers/cartReducers'
 import {
@@ -23,12 +25,18 @@ import {
     orderPayReducer,
     orderMyListReducer,
 } from './reducers/orderReducers'
+import { publishingListReducer } from './reducers/publishingReducers'
+
 
 
 const reducer = combineReducers({
+    publishingList: publishingListReducer,
+
     bookList: bookListReducer,
     bookDetails: bookDetailsReducer,
     bookDelete: bookDeleteReducer,
+    bookCreate: bookCreateReducer,
+    bookUpdate: bookUpdateReducer,
 
     cart: cartReducer,
 

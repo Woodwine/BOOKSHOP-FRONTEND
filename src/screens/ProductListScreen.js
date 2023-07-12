@@ -6,6 +6,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { useDispatch, useSelector } from 'react-redux'
 import { listBooks, deleteBook } from '../actions/bookActions'
+import { BOOK_CREATE_RESET, BOOK_DETAILS_RESET } from '../constants/bookConstants'
 
 
 function ProductListScreen() {
@@ -19,17 +20,25 @@ function ProductListScreen() {
     const bookDelete = useSelector(state => state.bookDelete)
     const { loading: loadingDelete, error: errorDelete, success: successDelete } = bookDelete
 
+
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
 
     useEffect(() => {
-        if (userInfo && userInfo.is_admin) {
-            dispatch(listBooks())
-        } else {
+
+        dispatch({ type: BOOK_CREATE_RESET })
+        dispatch({ type: BOOK_DETAILS_RESET })
+
+        if (!userInfo.is_admin) {
             navigate('/login')
         }
-    }, [dispatch, navigate, userInfo, successDelete]
+
+        dispatch(listBooks())
+
+
+
+    }, [dispatch, navigate, userInfo]
     )
 
     const deleteHandler = (id) => {
@@ -38,9 +47,6 @@ function ProductListScreen() {
         }
     }
 
-    const createBookHandler = (book) => {
-        // create
-    }
 
     return (
         <div>
@@ -50,14 +56,17 @@ function ProductListScreen() {
                 </Col>
 
                 <Col className='text-end'>
-                    <Button className='my-3' onClick={createBookHandler}>
-                        <i className='fas fa-plus'></i> &nbsp;&nbsp;Добавить товар
-                    </Button>
+                    <LinkContainer to={'/admin/booklist/create'}>
+                        <Button className='my-3'>
+                            <i className='fas fa-plus'></i> &nbsp;&nbsp;Добавить товар
+                        </Button>
+                    </LinkContainer>
                 </Col>
             </Row>
 
             {loadingDelete && <Loader />}
             {errorDelete && <Message variant='danger'>{errorDelete}</Message>}
+
 
             {loading ? (
                 <Loader />
@@ -82,7 +91,7 @@ function ProductListScreen() {
                                 <td>{book.title}</td>
                                 <td>{book.price} &#8381;</td>
                                 <td>
-                                    <LinkContainer to={`/admin/booklist/${book.id}`}>
+                                    <LinkContainer to={`/admin/booklist/${book.id}/edit`}>
                                         <Button variant='outline-secondary' className='btn-sm'>
                                             <i className='fas fa-edit' ></i>
                                         </Button>
