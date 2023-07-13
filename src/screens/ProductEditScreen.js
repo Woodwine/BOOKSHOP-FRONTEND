@@ -179,7 +179,7 @@ function ProductEditScreen() {
                                     as='select'
                                     type='select'
                                     value={publishing.id}
-                                    onChange={(e) => setPublishing(pubList.find(item => item.id === e.target.value))}
+                                    onChange={(e) => setPublishing(pubList.find(item => item.id === Number(e.target.value)))}
                                     className='list-group_item'
                                 >
                                     {pubList.map((item) =>

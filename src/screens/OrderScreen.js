@@ -1,17 +1,24 @@
-import React, { useEffect } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate, Link } from 'react-router-dom'
+import { Button, Row, Col, ListGroup, Image, Card, Form } from 'react-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { useDispatch, useSelector } from 'react-redux'
-import { getOrderDetails, payOrder } from '../actions/orderActions'
+import { getOrderDetails, payOrder, statusOrder } from '../actions/orderActions'
+import { ORDER_STATUS_RESET } from '../constants/orderConstants'
 
 
 function PlaceOrderScreen() {
     const params = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [status, setStatus] = useState('');
 
     const orderId = params.id
+
+    const userLogin = useSelector(state => state.userLogin)
+    const { userInfo } = userLogin
 
     const orderDetails = useSelector(state => state.orderDetails)
     const { order, error, loading } = orderDetails
@@ -19,19 +26,31 @@ function PlaceOrderScreen() {
     const orderPay = useSelector(state => state.orderPay)
     const { loading: loadingPay, success } = orderPay
 
+    const orderStatus = useSelector(state => state.orderStatus)
+    const { loading: loadingStatus, error: errorStatus, success: successStatus } = orderStatus
+
     if (!loading && !error) {
         order.itemsPrice = order.ord_books.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2)
     }
 
     useEffect(() => {
-        if (!order || order.id !== Number(orderId)) {
+        if (!userInfo) {
+            navigate('/login')
+        }
+        if (!order || order.id !== Number(orderId) || successStatus) {
+
+            dispatch({ type: ORDER_STATUS_RESET })
             dispatch(getOrderDetails(orderId))
         }
 
-    }, [order, orderId, dispatch])
+    }, [order, orderId, dispatch, successStatus, navigate, userInfo])
 
     const successPaymentHandler = () => {
         dispatch(payOrder(orderId))
+    }
+
+    const statusHandler = () => {
+        dispatch(statusOrder(orderId, status))
     }
 
     return loading ? (
@@ -166,7 +185,7 @@ function PlaceOrderScreen() {
                                 </Row>
                             </ListGroup.Item>
 
-                            {!order.is_paid && (
+                            {userInfo.id === order.customer.id && !order.is_paid && (
                                 <ListGroup.Item className='list-group_item'>
                                     {loadingPay && <Loader />}
                                     <Button type='button'
@@ -178,11 +197,45 @@ function PlaceOrderScreen() {
                                 </ListGroup.Item>
                             )}
 
+                            {loadingStatus && <Loader />}
+                            {errorStatus && <Message variant='danger'>{errorStatus}</Message>}
+                            {userInfo && userInfo.is_admin && !order.delivery_date && (
+
+                                <ListGroup.Item>
+
+                                    <h2 className='my-2 list-group_item fs-5'>Статус заказа</h2>
+                                    <Form.Control
+                                        as='select'
+                                        type='select'
+                                        value={status}
+                                        onChange={(e) => setStatus(e.target.value)}
+                                        className='list-group_item my-3'>
+
+                                        <option value='В работе' key='1'>В работе</option>
+                                        <option value='Передан в службу доставки' key='2'>Передан в службу доставки</option>
+                                        <option value='Доставлен' key='3'>Доставлен</option>
+                                        <option value='Отменен' key='4'>Отменен</option>
+
+                                    </Form.Control>
+
+                                    <Button
+                                        type='submit'
+                                        variant='primary'
+                                        className='btn-lg d-grid gap-2 col-12 mx-auto'
+                                        onClick={statusHandler}
+                                    >
+                                        Сохранить статус
+                                    </Button>
+                                </ListGroup.Item>
+
+                            )}
+
                         </ListGroup>
-                    </Card>
-                </Col>
-            </Row>
-        </div>
+                    </Card >
+
+                </Col >
+            </Row >
+        </div >
     )
 }
 

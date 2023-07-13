@@ -36,13 +36,15 @@ function ProductListScreen() {
 
         dispatch(listBooks())
 
+        if (successDelete) {
+            dispatch(listBooks())
+        }
 
-
-    }, [dispatch, navigate, userInfo]
+    }, [dispatch, navigate, userInfo, successDelete]
     )
 
-    const deleteHandler = (id) => {
-        if (window.confirm('Вы уверены, что хотите удалить данный товар?')) {
+    const deleteHandler = (id, title) => {
+        if (window.confirm(`Вы уверены, что хотите удалить ${title}?`)) {
             dispatch(deleteBook(id))
         }
     }
@@ -98,7 +100,7 @@ function ProductListScreen() {
                                     </LinkContainer>
                                 </td>
                                 <td>
-                                    <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(book.id)}>
+                                    <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(book.id, book.title)}>
                                         <i className='fas fa-trash'></i>
                                     </Button>
                                 </td>

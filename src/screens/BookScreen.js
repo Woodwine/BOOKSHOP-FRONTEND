@@ -15,6 +15,7 @@ function BookScreen() {
 
     const params = useParams();
     const dispatch = useDispatch();
+
     const bookDetails = useSelector(state => state.bookDetails);
     const { error, loading, book } = bookDetails;
 
@@ -57,7 +58,7 @@ function BookScreen() {
                                     </ListGroup.Item>
 
                                     <ListGroup.Item className='list-group_item py-3'>
-                                        Издательство: &nbsp;{book.publishing}
+                                        Издательство: &nbsp;{book.publishing ? book.publishing.name : null}
                                     </ListGroup.Item>
 
                                     <ListGroup.Item className='list-group_item py-3'>

@@ -13,7 +13,6 @@ import axios from 'axios'
 function ProductCreateScreen() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const formData = new FormData()
 
     const [title, setTitle] = useState('');
     const [image, setImage] = useState('');
@@ -31,14 +30,17 @@ function ProductCreateScreen() {
     const publishingList = useSelector(state => state.publishingList)
     const { loading: loadingPublishing, publishing: pubList, error: errorPublishing } = publishingList
 
+
     useEffect(() => {
 
         dispatch(listPublishing())
 
         if (success) {
 
-            console.log('BOOK ID', book)
+            const formData = new FormData()
+            formData.append('image', image)
             formData.append('book_id', book.id)
+
 
             try {
                 const config = {
@@ -47,18 +49,20 @@ function ProductCreateScreen() {
                     }
                 }
                 const { data } = axios.post('/api/v1/upload_image/', formData, config)
+                console.log('UPLOAD')
 
                 setImage(data)
                 setUploading(false)
 
 
             } catch (error) {
+                console.log('FAIL')
                 setUploading(false)
             }
 
             navigate('/admin/booklist')
         }
-    }, [navigate, success, dispatch, book])
+    }, [navigate, success, dispatch])
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -73,13 +77,6 @@ function ProductCreateScreen() {
             count_in_stock,
         }
         ))
-
-    }
-
-    const uploadFileHandler = (e) => {
-        const file = e.target.files[0]
-
-        formData.append('image', file)
 
     }
 
@@ -118,7 +115,7 @@ function ProductCreateScreen() {
 
                         <Form.Control
                             type='file'
-                            onChange={uploadFileHandler}
+                            onChange={(e) => setImage(e.target.files[0])}
                             className='list-group_item'
                         >
                         </Form.Control>
