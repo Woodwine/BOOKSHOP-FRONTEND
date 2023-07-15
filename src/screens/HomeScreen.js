@@ -5,17 +5,23 @@ import Book from '../components/Book'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { listBooks } from '../actions/bookActions'
+import { useNavigate, useLocation } from 'react-router-dom'
 
 
 
 function HomeScreen() {
     const dispatch = useDispatch();
+    const location = useLocation()
     const bookList = useSelector(state => state.bookList);
     const { error, loading, books } = bookList;
+    let keyword = location.search
+
+    console.log(keyword)
 
     useEffect(() => {
-        dispatch(listBooks())
-    }, [dispatch])
+        dispatch(listBooks(keyword))
+
+    }, [dispatch, keyword])
 
     return (
         <div>

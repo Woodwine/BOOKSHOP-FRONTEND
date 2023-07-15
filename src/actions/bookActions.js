@@ -19,15 +19,19 @@ import {
     BOOK_UPDATE_SUCCESS,
     BOOK_UPDATE_FAIL,
 
+    BOOK_CREATE_REVIEW_REQUEST,
+    BOOK_CREATE_REVIEW_SUCCESS,
+    BOOK_CREATE_REVIEW_FAIL,
+
 } from '../constants/bookConstants'
 import axios from 'axios'
 
 
-export const listBooks = () => async (dispatch) => {
+export const listBooks = (keyword = '') => async (dispatch) => {
     try {
         dispatch({ type: BOOK_LIST_REQUEST });
 
-        const { data } = await axios.get('/api/v1/books/');
+        const { data } = await axios.get(`/api/v1/books${keyword}`);
 
         dispatch({
             type: BOOK_LIST_SUCCESS,
@@ -49,7 +53,7 @@ export const listBookDetails = (id) => async (dispatch) => {
     try {
         dispatch({ type: BOOK_DETAILS_REQUEST });
 
-        const { data } = await axios.get(`/api/v1/books/${id}`);
+        const { data } = await axios.get(`/api/v1/books/${id}/`);
 
         dispatch({
             type: BOOK_DETAILS_SUCCESS,
@@ -172,6 +176,47 @@ export const updateBook = (book) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: BOOK_UPDATE_FAIL,
+            payload: error.response && error.response.data.detail
+                ? error.response.data.detail
+                : error.message,
+        })
+    }
+}
+
+
+export const createBookReview = (review) => async (dispatch, getState) => {
+    try {
+        dispatch({ type: BOOK_CREATE_REVIEW_REQUEST });
+
+        const {
+            userLogin: { userInfo },
+        } = getState()
+
+        const config = {
+            headers: {
+                'Content-type': 'application/json',
+                Authorization: `JWT ${userInfo.token}`
+            }
+        }
+
+        const { data } = await axios.post(
+            `/api/v1/comment/`,
+            review,
+            config
+        );
+
+        console.log(review)
+
+
+        dispatch({
+            type: BOOK_CREATE_REVIEW_SUCCESS,
+            payload: data
+        });
+
+
+    } catch (error) {
+        dispatch({
+            type: BOOK_CREATE_REVIEW_FAIL,
             payload: error.response && error.response.data.detail
                 ? error.response.data.detail
                 : error.message,

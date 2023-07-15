@@ -204,7 +204,8 @@ function ProductEditScreen() {
                             <Form.Group controlId='description' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Описание</Form.Label>
                                 <Form.Control
-                                    type='text'
+                                    as='textarea'
+                                    rows={5}
                                     placeholder='Введите описание книги'
                                     value={description}
                                     onChange={(e) => setDescription(e.target.value)}

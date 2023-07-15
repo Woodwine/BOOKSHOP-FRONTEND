@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Navbar, Container, Nav, Button, Form, NavDropdown } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { logout } from '../actions/userActions'
+import SearchBox from './SearchBox'
 
 function Header() {
     const navigate = useNavigate();
@@ -31,14 +32,17 @@ function Header() {
 
                     <Navbar.Toggle aria-controls="navbarScroll" />
                     <Navbar.Collapse id="navbarScroll">
+                        <SearchBox />
                         <Nav
-                            className="me-auto my-2 my-lg-0"
+                            className="ms-auto my-2 my-lg-0"
                             style={{ maxHeight: '100px' }}
                             navbarScroll
                         >
-                            <LinkContainer to="/cart" className='fs-5 mx-2'>
-                                <Nav.Link><i className='fas fa-shopping-cart'></i> Корзина</Nav.Link>
-                            </LinkContainer>
+                            {((userInfo && !userInfo.is_admin) || !userInfo) && (
+                                <LinkContainer to="/cart" className='fs-5 mx-2'>
+                                    <Nav.Link><i className='fas fa-shopping-cart'></i> Корзина</Nav.Link>
+                                </LinkContainer>
+                            )}
 
                             {userInfo ? (
                                 <NavDropdown title={userInfo.username} id='username' className='fs-5 mx-2'>
@@ -71,15 +75,7 @@ function Header() {
                             )}
 
                         </Nav>
-                        <Form className="d-flex">
-                            <Form.Control
-                                type="search"
-                                placeholder="Search"
-                                className="me-2"
-                                aria-label="Search"
-                            />
-                            <Button variant="secondary">Search</Button>
-                        </Form>
+
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
