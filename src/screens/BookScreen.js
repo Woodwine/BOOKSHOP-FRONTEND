@@ -240,7 +240,7 @@ function BookScreen() {
                                     ) : (
                                         <div>
                                             <h4>Оставить отзыв</h4>
-                                            <Message variant='secondary'>Пожалуйста войдите чтоб оставить отзыв о товаре<Link to={'/login'}>Войти</Link></Message>
+                                            <Message variant='secondary'>Пожалуйста, войдите, чтоб оставить отзыв о товаре<Link to={'/login'}>Войти</Link></Message>
                                         </div>
 
                                     )}
