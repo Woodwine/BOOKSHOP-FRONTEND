@@ -44,7 +44,7 @@ function RegisterScreen() {
         <FormContainer>
             <h1>Регистрация</h1>
             {message && <Message variant='danger'>{message}</Message>}
-            {error && <Message variant='danger'>{error}</Message>}
+            {error && error.map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
             {loading && <Loader />}
 
             <Form onSubmit={submitHandler}>

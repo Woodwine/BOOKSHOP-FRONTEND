@@ -67,7 +67,6 @@ function ProductEditScreen() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log(publishing)
         dispatch(updateBook({
             id: bookId,
             title,
@@ -119,7 +118,6 @@ function ProductEditScreen() {
                 <h1>Редактировать товар</h1>
 
                 {loadingUpdate && <Loader />}
-                {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
 
                 {loadingPublishing && <Loader />}
                 {errorPublishing && <Message variant='danger'>{errorPublishing}</Message>}
@@ -133,6 +131,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='title' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Название книги</Form.Label>
+                                {errorUpdate && errorUpdate['title'] && errorUpdate['title']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     type='text'
                                     placeholder='Введите название книги'
@@ -145,6 +145,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='image' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Фотография</Form.Label>
+                                {errorUpdate && errorUpdate['image'] && errorUpdate['image']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     type='text'
                                     value={image}
@@ -163,6 +165,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='author' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Автор</Form.Label>
+                                {errorUpdate && errorUpdate['author'] && errorUpdate['author']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     type='text'
                                     placeholder='Введите автора книги'
@@ -175,6 +179,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='publishing' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Издательство</Form.Label>
+                                {errorUpdate && errorUpdate['publishing'] && errorUpdate['publishing']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     as='select'
                                     type='select'
@@ -191,6 +197,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='publication_date' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Дата выхода книги</Form.Label>
+                                {errorUpdate && errorUpdate['publication_date'] && errorUpdate['publication_date']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     type='number'
                                     placeholder='Введите название книги'
@@ -203,6 +211,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='description' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Описание</Form.Label>
+                                {errorUpdate && errorUpdate['description'] && errorUpdate['description']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     as='textarea'
                                     rows={5}
@@ -216,6 +226,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='price' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Цена</Form.Label>
+                                {errorUpdate && errorUpdate['price'] && errorUpdate['price']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     type='number'
                                     placeholder='Введите цену книги'
@@ -228,6 +240,8 @@ function ProductEditScreen() {
 
                             <Form.Group controlId='count_in_stock' className='my-3'>
                                 <Form.Label className='my-2 list-group_item fs-5'>Остаток на складе</Form.Label>
+                                {errorUpdate && errorUpdate['count_in_stock'] && errorUpdate['count_in_stock']
+                                    .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                 <Form.Control
                                     type='text'
                                     placeholder='Введите количество'

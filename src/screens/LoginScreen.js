@@ -36,7 +36,7 @@ function LoginScreen() {
         <FormContainer>
             <h1>Авторизация</h1>
 
-            {error && <Message variant='danger'>{error}</Message>}
+            {error && error.map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
             {loading && <Loader />}
 
             <Form onSubmit={submitHandler}>

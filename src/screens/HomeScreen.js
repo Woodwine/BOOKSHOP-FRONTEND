@@ -27,7 +27,7 @@ function HomeScreen() {
         totalPages,
     } = usePagination({
         contentPerPage: 8,
-        count: books.length,
+        count: books ? books.length : 0,
     });
 
 

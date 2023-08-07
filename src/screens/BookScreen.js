@@ -44,7 +44,6 @@ function BookScreen() {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        console.log(book.id, rating, userInfo.id, comment)
         dispatch(createBookReview({
             book: book.id,
             rating: Number(rating),
@@ -189,7 +188,7 @@ function BookScreen() {
                                 <ListGroup.Item>
                                     {loadingReview && <Loader />}
                                     {successReview && <Message variant='success'>Отзыв отправлен</Message>}
-                                    {errorReview && <Message variant='danger'>{errorReview}</Message>}
+                                    {/* {errorReview && <Message variant='danger'>{errorReview}</Message>} */}
 
                                     {userInfo ? (
                                         (book.reviews === 0 || (book.book_comments && !book.book_comments.find(item => item.comment_author === userInfo.username))) && (
@@ -198,6 +197,8 @@ function BookScreen() {
                                                 <h4>Оставить отзыв</h4>
                                                 <Form.Group controlId='rating' className='mb-4'>
                                                     <Form.Label>Рейтинг</Form.Label>
+                                                    {errorReview && errorReview['rating'] && errorReview['rating']
+                                                        .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                                     <Form.Control
                                                         as='select'
                                                         value={rating}
@@ -215,6 +216,8 @@ function BookScreen() {
 
                                                 <Form.Group controlId='comment' className='my-4'>
                                                     <Form.Label>Отзыв</Form.Label>
+                                                    {errorReview && errorReview['comment'] && errorReview['comment']
+                                                        .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                                                     <Form.Control
                                                         as='textarea'
                                                         rows={5}

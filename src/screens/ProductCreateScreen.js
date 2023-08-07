@@ -49,14 +49,12 @@ function ProductCreateScreen() {
                     }
                 }
                 const { data } = axios.post('/api/v1/upload_image/', formData, config)
-                console.log('UPLOAD')
 
                 setImage(data)
                 setUploading(false)
 
 
             } catch (error) {
-                console.log('FAIL')
                 setUploading(false)
             }
 
@@ -90,7 +88,6 @@ function ProductCreateScreen() {
 
             <FormContainer>
                 <h1>Новый товар</h1>
-                {error && <Message variant='danger'>{error}</Message>}
                 {loading && <Loader />}
 
                 {errorPublishing && <Message variant='danger'>{errorPublishing}</Message>}
@@ -100,6 +97,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='title' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Название книги</Form.Label>
+                        {error && error['title'] && error['title']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             type='text'
                             placeholder='Введите название книги'
@@ -112,6 +111,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='image' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Фотография</Form.Label>
+                        {error && error['image'] && error['image']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
 
                         <Form.Control
                             type='file'
@@ -124,6 +125,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='author' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Автор</Form.Label>
+                        {error && error['author'] && error['author']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             type='text'
                             placeholder='Введите имя автора'
@@ -136,6 +139,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='publishing' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Издательство</Form.Label>
+                        {error && error['publishing'] && error['publishing']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             as='select'
                             type='select'
@@ -152,6 +157,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='publication_date' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Дата выхода книги</Form.Label>
+                        {error && error['publication_date'] && error['publication_date']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             type='number'
                             placeholder='Введите название книги'
@@ -164,6 +171,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='description' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Описание</Form.Label>
+                        {error && error['description'] && error['description']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             as='textarea'
                             rows={5}
@@ -177,6 +186,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='price' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Цена</Form.Label>
+                        {error && error['price'] && error['price']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             type='number'
                             placeholder='Введите цену книги'
@@ -189,6 +200,8 @@ function ProductCreateScreen() {
 
                     <Form.Group controlId='count_in_stock' className='my-3'>
                         <Form.Label className='my-2 list-group_item fs-5'>Остаток на складе</Form.Label>
+                        {error && error['count_in_stock'] && error['count_in_stock']
+                            .map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                         <Form.Control
                             type='text'
                             placeholder='Введите количество'

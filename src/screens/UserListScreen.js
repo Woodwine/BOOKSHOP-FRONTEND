@@ -42,7 +42,7 @@ function UserListScreen() {
             {loading ? (
                 <Loader />
             ) : error ? (
-                <Message variant='danger'>{error}</Message>
+                error.map((err, index) => <Message variant='danger' key={index}>{err}</Message>)
             ) : (
                 <Table striped hover responsive className='table-sm'>
                     <thead>

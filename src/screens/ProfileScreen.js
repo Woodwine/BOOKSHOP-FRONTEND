@@ -25,7 +25,7 @@ function ProfileScreen() {
     const { userInfo } = userLogin
 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const { success } = userUpdateProfile
+    const { success, error: errorUpdate } = userUpdateProfile
 
     const orderMyList = useSelector(state => state.orderMyList)
     const { loading: loadingOrders, error: errorOrders, orders } = orderMyList
@@ -62,6 +62,7 @@ function ProfileScreen() {
                 <h2>Профиль</h2>
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
+                {errorUpdate && errorUpdate.map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
                 {loading && <Loader />}
 
                 <Form onSubmit={submitHandler}>

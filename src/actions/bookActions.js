@@ -138,8 +138,8 @@ export const createBook = (book) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: BOOK_CREATE_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? error.response.data
                 : error.message,
         })
     }
@@ -176,8 +176,8 @@ export const updateBook = (book) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: BOOK_UPDATE_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? error.response.data
                 : error.message,
         })
     }
@@ -217,8 +217,8 @@ export const createBookReview = (review) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: BOOK_CREATE_REVIEW_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? error.response.data
                 : error.message,
         })
     }

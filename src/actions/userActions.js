@@ -62,8 +62,9 @@ export const login = (username, password) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_LOGIN_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? Object.values(error.response.data)
+                    .reduce((arr, item) => arr.concat(item), [])
                 : error.message,
         })
     }
@@ -110,8 +111,9 @@ export const register = (username, email, password) => async (dispatch) => {
     } catch (error) {
         dispatch({
             type: USER_REGISTER_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? Object.values(error.response.data)
+                    .reduce((arr, item) => arr.concat(item), [])
                 : error.message,
         })
     }
@@ -190,8 +192,9 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_PROFILE_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? Object.values(error.response.data)
+                    .reduce((arr, item) => arr.concat(item), [])
                 : error.message,
         })
     }
@@ -303,8 +306,9 @@ export const updateUser = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_FAIL,
-            payload: error.response && error.response.data.detail
-                ? error.response.data.detail
+            payload: error.response && error.response.data
+                ? Object.values(error.response.data)
+                    .reduce((arr, item) => arr.concat(item), [])
                 : error.message,
         })
     }

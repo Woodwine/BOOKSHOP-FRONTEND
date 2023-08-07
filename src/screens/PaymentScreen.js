@@ -11,7 +11,7 @@ function PaymentScreen() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const [paymentMethod, setPaymentMethod] = useState('PayPal')
+    const [paymentMethod, setPaymentMethod] = useState('Card')
 
     const cart = useSelector(state => state.cart)
     const { shippingAddress } = cart
@@ -40,8 +40,8 @@ function PaymentScreen() {
                     <Col className='py-2'>
                         <Form.Check
                             type='radio'
-                            label='PayPal or Credit Card'
-                            id='paypal'
+                            label='Card'
+                            id='card'
                             name='paymentMethod'
                             checked
                             onChange={(e) => setPaymentMethod(e.target.value)}

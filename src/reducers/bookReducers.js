@@ -59,8 +59,6 @@ export const bookDetailsReducer = (state = { book: { comments: [] } }, action) =
             return { loading: false, error: action.payload };
 
         case BOOK_DETAILS_RESET:
-            console.log('BOOK_DETAILS_RESET')
-
             return { book: { comments: [] } }
 
         default:
@@ -118,7 +116,6 @@ export const bookUpdateReducer = (state = { book: {} }, action) => {
             return { loading: false, error: action.payload };
 
         case BOOK_UPDATE_RESET:
-            console.log('BOOK_UPDATE_RESET')
             return { book: {} };
 
         default:
@@ -139,7 +136,6 @@ export const bookReviewCreateReducer = (state = {}, action) => {
             return { loading: false, error: action.payload };
 
         case BOOK_CREATE_REVIEW_RESET:
-            console.log('BOOK_UPDATE_RESET')
             return {};
 
         default:

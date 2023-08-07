@@ -61,7 +61,7 @@ function UserEditScreen() {
             <FormContainer>
                 <h1>Редактировать профиль</h1>
                 {loadingUpdate && <Loader />}
-                {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+                {errorUpdate && errorUpdate.map((err, index) => <Message variant='danger' key={index}>{err}</Message>)}
 
                 {loading ?
                     (<Loader />)
