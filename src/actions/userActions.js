@@ -101,12 +101,7 @@ export const register = (username, email, password) => async (dispatch) => {
             payload: data,
         });
 
-        dispatch({
-            type: USER_LOGIN_SUCCESS,
-            payload: data,
-        });
-
-        localStorage.setItem('userInfo', JSON.stringify(data))
+        dispatch(login(username, password))
 
     } catch (error) {
         dispatch({
@@ -136,7 +131,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.get(
-            `/api/v1/users/${id}/`,
+            userInfo.is_admin ? `/api/v1/users/${id}/` : `/api/v1/profile/${id}/`,
             config
         );
 
@@ -172,7 +167,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
         }
 
         const { data } = await axios.put(
-            `/api/v1/users/${user.id}/`,
+            `/api/v1/profile/${user.id}/`,
             user,
             config
         );
